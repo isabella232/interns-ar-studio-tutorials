@@ -11,13 +11,19 @@ var Animation = require('Animation');
 var FaceTracking = require('FaceTracking');
 var Scene = require('Scene');
 
-var ft = Scene.root.child('Device').child('Camera').child('Focal Distance').child('facetracker0');
+var ft = Scene.root
+  .child('Device')
+  .child('Camera')
+  .child('Focal Distance')
+  .child('facetracker0');
 
 var pizzaWheel0 = ft.child('pizzas_123');
 var pizzaWheel1 = ft.child('pizzas_456');
 var pizzaWheel2 = ft.child('pizzas_789');
 
-var mouthIsOpen = FaceTracking.face(0).mouth.openness.gt(0.3).and(FaceTracking.count.gt(0));
+var mouthIsOpen = FaceTracking.face(0)
+  .mouth.openness.gt(0.3)
+  .and(FaceTracking.count.gt(0));
 
 pizzaWheel0.hidden = pizzaWheel1.hidden = pizzaWheel2.hidden = mouthIsOpen.not();
 
@@ -28,7 +34,7 @@ pizzaWheel0.transform.rotationX = Animation.animate(wheelDriver, wheelSampler);
 pizzaWheel1.transform.rotationX = Animation.animate(wheelDriver, wheelSampler);
 pizzaWheel2.transform.rotationX = Animation.animate(wheelDriver, wheelSampler);
 
-mouthIsOpen.monitor().subscribe(function (e) {
+mouthIsOpen.monitor().subscribe(function(e) {
   e.newValue == true ? wheelDriver.start() : wheelDriver.stop();
   e.newValue == true ? wheelDriver.start() : wheelDriver.reset();
 });
